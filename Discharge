@@ -1,0 +1,61 @@
+#include <iostream>
+#include <math.h>
+using namespace std;
+int main()
+{
+	int n,i,j,k,rn;
+	float a,s,dep,avg,qr;
+	cout<<"Enter the no. of year for which data is available\n";
+	cin>>n;
+	float q[36][(2*n)+2];
+	for (i=0;i<n;i++)
+	{
+		for (j=0;j<36;j++)
+		{
+			cout<<"Enter the "<<j+1 <<"th discharge data for "<<i+1<<"th year= ";
+			cin>>q[j][i];
+			q[j][i+n]=q[j][i];
+		}
+	}
+	for (i=n;i<2*n;i++)
+	{
+		for (j=0;j<35;j++)
+		{
+			for (k=j+1;k<36;k++)
+			{
+				if (q[j][i]<q[k][i])
+				{
+					a=q[j][i];
+					q[j][i]=q[k][i];
+					q[k][i]=a;					
+				}
+			}
+		}
+	}
+	for (j=0;j<36;j++)
+	{s=0;
+for (i=n;i<2*n;i++)
+		{
+			s+=q[j][i];
+		}
+		avg=s/n;
+		q[j][2*n]=avg;
+		q[j][(2*n)+1]=100*(j+1)/36;
+		
+	}
+	
+	for (j=0;j<36;j++)
+	{
+		for (i=0;i<2*n+2;i++)
+		{
+			cout<<q[j][i]<<" ";
+		}
+		cout<<endl;
+	}
+	
+	cout<<"Enter the dependability percent ";
+	cin>>dep;
+	rn=dep*36/100;
+	qr=q[rn-1][2*n]+((q[rn-1][2*n]-q[rn][2*n])/2.78)*(q[rn-1][(2*n)+1]-dep);
+	cout<<"The discharge at "<<dep <<" dependability is "<<qr;
+}
